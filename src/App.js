@@ -7,6 +7,7 @@ import Home from "./components/Home";
 import Body from "./components/Body";
 import Cart from "./components/Cart";
 import About from "./components/About";
+import ContactUs from "./components/ContactUs";
 import { CartProvider } from "./CartContext";
 
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
@@ -49,6 +50,10 @@ const appRouter = createBrowserRouter([
             {
                 path: "/home",
                 element: <Home />
+            },
+            {
+                path: "/contact",
+                element: <ContactUs />
             }
 		],
 	},

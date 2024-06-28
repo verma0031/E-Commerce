@@ -45,6 +45,15 @@ const Header = () => {
 								About
 							</NavLink>
 						</li>
+						<li className="text-lg font-bold cursor-pointer">
+							<NavLink
+								to="/contact"
+								
+								className="hover:text-blue-500"
+							>
+								ContactUs
+							</NavLink>
+						</li>
 					</ul>
 				</div>
 				<button
