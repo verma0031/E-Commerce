@@ -1,4 +1,15 @@
+import {useState} from "react";
+import Cart from "./Cart";
+
 const Header = () => {
+
+    const [isCartOpen, setIsCartOpen] = useState(false);
+
+		const toggleCart = () => {
+			setIsCartOpen(!isCartOpen);
+		};
+
+
 	return (
 		<div>
 			<div className="w-full h-12 bg-slate-300 flex items-center justify-between px-4 mb-0.5">
@@ -9,7 +20,10 @@ const Header = () => {
 						<li className="text-lg font-bold cursor-pointer">About</li>
 					</ul>
 				</div>
-				<button className="m-2 p-2 bg-blue-500 text-white rounded hover:bg-blue-700">
+				<button
+					className="m-2 p-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+					onClick={toggleCart}
+				>
 					Cart
 				</button>
 			</div>
@@ -18,6 +32,7 @@ const Header = () => {
 					The Generics
 				</h1>
 			</div>
+			<Cart isOpen={isCartOpen} onClose={toggleCart} />
 		</div>
 	);
 };
