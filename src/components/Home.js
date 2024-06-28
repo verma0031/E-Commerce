@@ -21,12 +21,22 @@ const Home = () => {
 		setError(null);
 
 		try {
-			const response = await fetch("https://swapi.dev/api/films");
+			const response = await fetch(
+				"https://ecommerce-ad896-default-rtdb.firebaseio.com/movies.json"
+			);
 			if (!response.ok) {
 				throw new Error("Something went wrong... Retrying");
 			}
 			const data = await response.json();
-			setMovies(data.results);
+			if (data) {
+				const moviesArray = Object.keys(data).map((key) => ({
+					id: key,
+					...data[key],
+				}));
+				setMovies(moviesArray);
+			} else {
+				setMovies([]);
+			}
 			setIsLoading(false);
 			setIsRetrying(false);
 		} catch (err) {
@@ -67,19 +77,29 @@ const Home = () => {
 		}));
 	};
 
-	const handleAddMovie = (e) => {
+	const handleAddMovie = async (e) => {
 		e.preventDefault();
-		console.log(newMovie);
+
+		const response = await fetch(
+			"https://ecommerce-ad896-default-rtdb.firebaseio.com/movies.json",
+			{
+				method: "POST",
+				body: JSON.stringify(newMovie),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
+
+		const data = await response.json();
+		console.log(data);
 
 		// Add new movie to the list of movies
 		setMovies((prevMovies) => [
 			...prevMovies,
 			{
-				title: newMovie.title,
-				opening_crawl: newMovie.openingCrawl,
-				director: newMovie.director,
-				release_date: newMovie.releaseDate,
-				episode_id: prevMovies.length + 1, // Generate a unique ID for the new movie
+				id: data.name, // Firebase returns the unique key in the name property
+				...newMovie,
 			},
 		]);
 
@@ -162,21 +182,24 @@ const Home = () => {
 					)}
 				</div>
 			)}
+			{!isLoading && movies.length === 0 && !error && (
+				<p className="text-center text-gray-600">No movies present.</p>
+			)}
 			{!isLoading && movies.length > 0 && (
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 					{movies.map((movie) => (
 						<div
-							key={movie.episode_id}
+							key={movie.id}
 							className="bg-white rounded-lg shadow-md overflow-hidden"
 						>
 							<div className="p-4">
 								<h2 className="text-2xl font-bold mb-2">{movie.title}</h2>
-								<p className="text-gray-700 mb-4">{movie.opening_crawl}</p>
+								<p className="text-gray-700 mb-4">{movie.openingCrawl}</p>
 								<p className="text-gray-800">
 									<strong>Director:</strong> {movie.director}
 								</p>
 								<p className="text-gray-800">
-									<strong>Release Date:</strong> {movie.release_date}
+									<strong>Release Date:</strong> {movie.releaseDate}
 								</p>
 							</div>
 						</div>
