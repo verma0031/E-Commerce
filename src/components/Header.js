@@ -1,4 +1,7 @@
 import { useState, useContext } from "react";
+import {NavLink} from "react-router-dom";
+
+import About from "./About";
 import Cart from "./Cart";
 import CartContext from "../CartContext"; // Make sure the path is correct
 
@@ -17,7 +20,15 @@ const Header = () => {
 					<ul className="flex space-x-4">
 						<li className="text-lg font-bold cursor-pointer">Home</li>
 						<li className="text-lg font-bold cursor-pointer">Store</li>
-						<li className="text-lg font-bold cursor-pointer">About</li>
+						<li className="text-lg font-bold cursor-pointer">
+							<NavLink
+								to="/about"
+								activeClassName="text-blue-500"
+								className="hover:text-blue-500"
+							>
+								About
+							</NavLink>
+						</li>
 					</ul>
 				</div>
 				<button
