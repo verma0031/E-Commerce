@@ -1,14 +1,14 @@
-import {useState} from "react";
+import { useState, useContext } from "react";
 import Cart from "./Cart";
+import CartContext from "../CartContext"; // Make sure the path is correct
 
 const Header = () => {
+	const { cartCount } = useContext(CartContext);
+	const [isCartOpen, setIsCartOpen] = useState(false);
 
-    const [isCartOpen, setIsCartOpen] = useState(false);
-
-		const toggleCart = () => {
-			setIsCartOpen(!isCartOpen);
-		};
-
+	const toggleCart = () => {
+		setIsCartOpen(!isCartOpen);
+	};
 
 	return (
 		<div>
@@ -21,10 +21,15 @@ const Header = () => {
 					</ul>
 				</div>
 				<button
-					className="m-2 p-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+					className="m-2 p-2 bg-blue-500 text-white rounded hover:bg-blue-700 relative"
 					onClick={toggleCart}
 				>
 					Cart
+					{cartCount > 0 && (
+						<span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-sm">
+							{cartCount}
+						</span>
+					)}
 				</button>
 			</div>
 			<div className="w-full h-24 bg-black flex items-center justify-center">

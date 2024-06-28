@@ -1,34 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
+import CartContext from "../CartContext"; // Make sure the path is correct
 
 const Cart = ({ isOpen, onClose }) => {
-	const [cartItems, setCartItems] = useState([
-		{
-			title: "Colors",
-			price: 100,
-			imageUrl:
-				"https://prasadyash2411.github.io/ecom-website/img/Album%201.png",
-			quantity: 2,
-		},
-		{
-			title: "Black and white Colors",
-			price: 50,
-			imageUrl:
-				"https://prasadyash2411.github.io/ecom-website/img/Album%202.png",
-			quantity: 3,
-		},
-		{
-			title: "Yellow and Black Colors",
-			price: 70,
-			imageUrl:
-				"https://prasadyash2411.github.io/ecom-website/img/Album%203.png",
-			quantity: 1,
-		},
-	]);
+	const { cart, removeFromCart } = useContext(CartContext);
 
 	const handleRemoveItem = (index) => {
-		const newCartItems = [...cartItems];
-		newCartItems.splice(index, 1);
-		setCartItems(newCartItems);
+		removeFromCart(index);
 	};
 
 	if (!isOpen) return null;
@@ -40,7 +17,7 @@ const Cart = ({ isOpen, onClose }) => {
 			</button>
 			<h2 className="text-2xl font-bold mb-4">Cart</h2>
 			<ul>
-				{cartItems.map((item, index) => (
+				{cart.map((item, index) => (
 					<li key={index} className="flex items-center mb-4">
 						<img
 							src={item.imageUrl}
