@@ -18,12 +18,28 @@ const Header = () => {
 			<div className="w-full h-12 bg-slate-300 flex items-center justify-between px-4 mb-0.5">
 				<div className="flex-1 flex justify-center">
 					<ul className="flex space-x-4">
-						<li className="text-lg font-bold cursor-pointer">Home</li>
-						<li className="text-lg font-bold cursor-pointer">Store</li>
+						<li className="text-lg font-bold cursor-pointer">
+							<NavLink
+								to="/home"
+								
+								className="hover:text-blue-500"
+							>
+								Home
+							</NavLink>
+						</li>
+						<li className="text-lg font-bold cursor-pointer">
+							<NavLink
+								to="/store"
+								
+								className="hover:text-blue-500"
+							>
+								Store
+							</NavLink>
+						</li>
 						<li className="text-lg font-bold cursor-pointer">
 							<NavLink
 								to="/about"
-								activeClassName="text-blue-500"
+								
 								className="hover:text-blue-500"
 							>
 								About

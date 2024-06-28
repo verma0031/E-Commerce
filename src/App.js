@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
+
+
 import Header from "./components/Header";
+import Home from "./components/Home";
 import Body from "./components/Body";
 import Cart from "./components/Cart";
 import About from "./components/About";
@@ -40,9 +43,13 @@ const appRouter = createBrowserRouter([
 				element: <About />,
 			},
 			{
-				path: "/",
+				path: "/store",
 				element: <Body />,
 			},
+            {
+                path: "/home",
+                element: <Home />
+            }
 		],
 	},
 ]);
