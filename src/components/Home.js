@@ -1,23 +1,77 @@
-// src/components/Home.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 const Home = () => {
 	const [movies, setMovies] = useState([]);
+	const [isLoading, setIsLoading] = useState(false); // Start with false to prevent immediate loading
+	const [error, setError] = useState(null);
+	const [isRetrying, setIsRetrying] = useState(false);
+	const [retryTimeout, setRetryTimeout] = useState(null);
+
+	const getMovies = useCallback(async () => {
+		if (isRetrying) return; // Prevent multiple retries at the same time
+
+		setIsLoading(true);
+		setError(null);
+
+		try {
+			const response = await fetch("https://swapi.dev/api/films");
+			if (!response.ok) {
+				throw new Error("Something went wrong... Retrying");
+			}
+			const data = await response.json();
+			setMovies(data.results);
+			setIsLoading(false);
+			setIsRetrying(false);
+		} catch (err) {
+			setError(err.message);
+			setIsLoading(false); // Ensure isLoading is false when an error occurs
+			setIsRetrying(true); // Set retrying state
+			setRetryTimeout(
+				setTimeout(() => {
+					setIsRetrying(false);
+					getMovies();
+				}, 5000)
+			); // Set timeout for retrying
+		}
+	}, [isRetrying]);
 
 	useEffect(() => {
 		getMovies();
-	}, []);
+		return () => {
+			if (retryTimeout) {
+				clearTimeout(retryTimeout);
+			}
+		};
+	}, [getMovies, retryTimeout]);
 
-	const getMovies = async () => {
-		const response = await fetch("https://swapi.dev/api/films");
-		const data = await response.json();
-		setMovies(data.results);
+	const handleCancelRetry = () => {
+		if (retryTimeout) {
+			clearTimeout(retryTimeout);
+		}
+		setIsRetrying(false); // Reset retrying state
+		setError(null);
 	};
 
 	return (
 		<div className="container mx-auto my-8 p-4">
 			<h1 className="text-3xl font-bold mb-4 text-center">Movies</h1>
-			{movies.length > 0 ? (
+			{isLoading && (
+				<p className="text-center text-gray-600">Loading movies...</p>
+			)}
+			{error && (
+				<div className="text-center text-red-600">
+					<p>{error}</p>
+					{isRetrying && (
+						<button
+							className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700"
+							onClick={handleCancelRetry}
+						>
+							Cancel Retry
+						</button>
+					)}
+				</div>
+			)}
+			{!isLoading && movies.length > 0 && (
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 					{movies.map((movie) => (
 						<div
@@ -37,8 +91,6 @@ const Home = () => {
 						</div>
 					))}
 				</div>
-			) : (
-				<p className="text-center text-gray-600">Loading movies...</p>
 			)}
 		</div>
 	);
