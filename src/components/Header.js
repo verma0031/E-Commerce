@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import About from "./About";
 import Cart from "./Cart";
@@ -19,39 +19,33 @@ const Header = () => {
 				<div className="flex-1 flex justify-center">
 					<ul className="flex space-x-4">
 						<li className="text-lg font-bold cursor-pointer">
-							<NavLink
-								to="/home"
-								
-								className="hover:text-blue-500"
-							>
+							<NavLink to="/home" className="hover:text-blue-500">
 								Home
 							</NavLink>
 						</li>
 						<li className="text-lg font-bold cursor-pointer">
-							<NavLink
-								to="/store"
-								
-								className="hover:text-blue-500"
-							>
+							<NavLink to="/store" className="hover:text-blue-500">
 								Store
 							</NavLink>
 						</li>
 						<li className="text-lg font-bold cursor-pointer">
-							<NavLink
-								to="/about"
-								
-								className="hover:text-blue-500"
-							>
+							<NavLink to="/about" className="hover:text-blue-500">
 								About
 							</NavLink>
 						</li>
 						<li className="text-lg font-bold cursor-pointer">
-							<NavLink
-								to="/contact"
-								
-								className="hover:text-blue-500"
-							>
+							<NavLink to="/contact" className="hover:text-blue-500">
 								ContactUs
+							</NavLink>
+						</li>
+						<li className="text-lg font-bold cursor-pointer">
+							<NavLink to="/signup" className="hover:text-blue-500">
+								SignUp{" "}
+							</NavLink>
+						</li>
+						<li className="text-lg font-bold cursor-pointer">
+							<NavLink to="/login" className="hover:text-blue-500">
+								Login{" "}
 							</NavLink>
 						</li>
 					</ul>
