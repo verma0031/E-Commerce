@@ -1,29 +1,51 @@
+// src/AuthContext.js
 import React, { createContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-	const [authToken, setAuthToken] = useState(null);
-
-	useEffect(() => {
-		// Load token from localStorage on component mount (like page refresh)
-		const token = localStorage.getItem("authToken");
-		if (token) {
-			setAuthToken(token);
-		}
-	}, []);
+	const [authToken, setAuthToken] = useState(() =>
+		localStorage.getItem("authToken")
+	);
+	const [logoutTimer, setLogoutTimer] = useState(null);
 
 	const login = (token) => {
-		// Store token in localStorage and state
-		localStorage.setItem("authToken", token);
 		setAuthToken(token);
+		localStorage.setItem("authToken", token);
+		setLogoutTimer(setTimeout(logout, 300000)); // 5 minutes in milliseconds
 	};
 
 	const logout = () => {
-		// Clear token from localStorage and state
-		localStorage.removeItem("authToken");
 		setAuthToken(null);
+		localStorage.removeItem("authToken");
+		if (logoutTimer) {
+			clearTimeout(logoutTimer);
+			setLogoutTimer(null);
+		}
 	};
+
+	const logoutWithTimeout = () => {
+		logout();
+		alert("Session expired. Please login again.");
+	};
+
+	useEffect(() => {
+		const storedToken = localStorage.getItem("authToken");
+		if (storedToken) {
+			setAuthToken(storedToken);
+			setLogoutTimer(setTimeout(logoutWithTimeout, 300000)); // Set initial timeout on page load
+		}
+	}, []);
+
+	// Clear timer on component unmount
+	useEffect(() => {
+		return () => {
+			if (logoutTimer) {
+				clearTimeout(logoutTimer);
+				setLogoutTimer(null);
+			}
+		};
+	}, []);
 
 	return (
 		<AuthContext.Provider value={{ authToken, login, logout }}>
