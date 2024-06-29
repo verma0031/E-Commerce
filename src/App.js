@@ -8,6 +8,7 @@ import Body from "./components/Body";
 import Cart from "./components/Cart";
 import About from "./components/About";
 import ContactUs from "./components/ContactUs";
+import ProductPage from "./components/Products";
 import { CartProvider } from "./CartContext";
 
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
@@ -54,7 +55,11 @@ const appRouter = createBrowserRouter([
             {
                 path: "/contact",
                 element: <ContactUs />
-            }
+            },
+            {
+                path: "/product/:productId",
+                element: <ProductPage />,
+            },
 		],
 	},
 ]);
