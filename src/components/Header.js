@@ -48,6 +48,11 @@ const Header = () => {
 						>
 							Logout
 						</button>
+						<li className="text-lg font-bold cursor-pointer">
+							<NavLink to="/change-password" className="hover:text-blue-500">
+								Change Password
+							</NavLink>
+						</li>
 					</ul>
 				</div>
 				<button

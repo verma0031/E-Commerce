@@ -1,5 +1,5 @@
 // src/App.js
-import React, { useState } from "react";
+import React, {useState} from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import Header from "./components/Header";
@@ -12,6 +12,7 @@ import ProductPage from "./components/Products";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
 import ProtectedRoute from "./components/ProtectedRoutes";
+import ChangePassword from "./components/ChangePassword";
 import { CartProvider } from "./CartContext";
 import { AuthProvider } from "./AuthContext"; // Make sure this file exists and is correctly implemented
 
@@ -93,6 +94,14 @@ const appRouter = createBrowserRouter([
 				element: (
 					<ProtectedRoute>
 						<Profile />
+					</ProtectedRoute>
+				),
+			},
+			{
+				path: "/change-password",
+				element: (
+					<ProtectedRoute>
+						<ChangePassword />
 					</ProtectedRoute>
 				),
 			},
