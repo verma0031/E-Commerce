@@ -1,11 +1,13 @@
 import { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 
-import About from "./About";
+import AuthContext from "../AuthContext";
 import Cart from "./Cart";
 import CartContext from "../CartContext"; // Make sure the path is correct
 
 const Header = () => {
+
+	const { authToken, logout } = useContext(AuthContext);
 	const { cartCount } = useContext(CartContext);
 	const [isCartOpen, setIsCartOpen] = useState(false);
 
@@ -38,16 +40,14 @@ const Header = () => {
 								ContactUs
 							</NavLink>
 						</li>
-						<li className="text-lg font-bold cursor-pointer">
-							<NavLink to="/signup" className="hover:text-blue-500">
-								SignUp{" "}
-							</NavLink>
-						</li>
-						<li className="text-lg font-bold cursor-pointer">
-							<NavLink to="/login" className="hover:text-blue-500">
-								Login{" "}
-							</NavLink>
-						</li>
+						<button
+							onClick={() => {
+								logout();
+							}}
+							className="bg-red-500 px-4 py-2 rounded"
+						>
+							Logout
+						</button>
 					</ul>
 				</div>
 				<button

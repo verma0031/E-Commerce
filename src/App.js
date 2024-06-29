@@ -1,7 +1,7 @@
+// src/App.js
 import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
-
-
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./components/Home";
 import Body from "./components/Body";
@@ -9,11 +9,11 @@ import Cart from "./components/Cart";
 import About from "./components/About";
 import ContactUs from "./components/ContactUs";
 import ProductPage from "./components/Products";
-import SignUp from "./components/SignUp";
 import Login from "./components/Login";
+import Profile from "./components/Profile";
+import ProtectedRoute from "./components/ProtectedRoutes";
 import { CartProvider } from "./CartContext";
-
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import { AuthProvider } from "./AuthContext"; // Make sure this file exists and is correctly implemented
 
 const App = () => {
 	const [isCartOpen, setIsCartOpen] = useState(false);
@@ -27,13 +27,15 @@ const App = () => {
 	};
 
 	return (
-		<CartProvider>
-			<div>
-				<Header onCartOpen={handleCartOpen} />
-				<Outlet />
-				<Cart isOpen={isCartOpen} onClose={handleCartClose} />
-			</div>
-		</CartProvider>
+		<AuthProvider>
+			<CartProvider>
+				<div>
+					<Header onCartOpen={handleCartOpen} />
+					<Outlet />
+					<Cart isOpen={isCartOpen} onClose={handleCartClose} />
+				</div>
+			</CartProvider>
+		</AuthProvider>
 	);
 };
 
@@ -43,32 +45,56 @@ const appRouter = createBrowserRouter([
 		element: <App />,
 		children: [
 			{
-				path: "/about",
-				element: <About />,
-			},
-			{
-				path: "/store",
-				element: <Body />,
+				path: "/login",
+				element: <Login />,
 			},
 			{
 				path: "/home",
-				element: <Home />,
+				element: (
+					<ProtectedRoute>
+						<Home />
+					</ProtectedRoute>
+				),
+			},
+			{
+				path: "/about",
+				element: (
+					<ProtectedRoute>
+						<About />
+					</ProtectedRoute>
+				),
+			},
+			{
+				path: "/store",
+				element: (
+					<ProtectedRoute>
+						<Body />
+					</ProtectedRoute>
+				),
 			},
 			{
 				path: "/contact",
-				element: <ContactUs />,
+				element: (
+					<ProtectedRoute>
+						<ContactUs />
+					</ProtectedRoute>
+				),
 			},
 			{
 				path: "/product/:productId",
-				element: <ProductPage />,
+				element: (
+					<ProtectedRoute>
+						<ProductPage />
+					</ProtectedRoute>
+				),
 			},
 			{
-				path: "/signup",
-				element: <SignUp />,
-			},
-			{
-				path: "/login",
-				element: <Login />,
+				path: "/profile",
+				element: (
+					<ProtectedRoute>
+						<Profile />
+					</ProtectedRoute>
+				),
 			},
 		],
 	},
