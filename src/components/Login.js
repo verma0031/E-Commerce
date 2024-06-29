@@ -29,11 +29,12 @@ const Login = () => {
 					}),
 				}
 			);
+
 			const data = await response.json();
 			if (data.error) {
 				setError(data.error.message);
 			} else {
-				login(data.idToken);
+				login(data.idToken); // Store token in context and localStorage
 				navigate("/home"); // Redirect to home after successful login
 			}
 		} catch (err) {
